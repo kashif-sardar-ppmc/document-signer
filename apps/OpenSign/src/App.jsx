@@ -17,7 +17,7 @@ import PdfRequestFiles from "./pages/PdfRequestFiles";
 import Lazy from "./primitives/LazyPage";
 import Loader from "./primitives/Loader";
 import UserList from "./pages/UserList";
-import { serverUrl_fn } from "./constant/appinfo";
+import { serverUrl_fn, appBasename } from "./constant/appinfo";
 import DocSuccessPage from "./pages/DocSuccessPage";
 import DragProvider from "./components/DragProivder";
 import Title from "./components/Title";
@@ -62,7 +62,7 @@ function App() {
       {isloading ? (
         <AppLoader />
       ) : (
-        <BrowserRouter basename="/ppmc-doc-signer">
+        <BrowserRouter basename={appBasename}>
           <Title />
           <Routes>
             <Route element={<ValidateRoute />}>

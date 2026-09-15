@@ -1,6 +1,13 @@
 import logo from "../assets/images/logo.png";
 import { getEnv } from "./Utils";
 
+// Base path the app is deployed under (matches vite.config.js `base`), e.g. "/ppmc-doc-signer".
+// Empty string in local dev where base is "/".
+export const appBasename =
+  import.meta.env.BASE_URL !== "/"
+    ? import.meta.env.BASE_URL.replace(/\/$/, "")
+    : "";
+
 export function serverUrl_fn() {
   const env = getEnv();
   const serverurl = env?.REACT_APP_SERVERURL

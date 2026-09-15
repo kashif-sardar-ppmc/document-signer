@@ -51,6 +51,7 @@ import {
   handleCheckResponse,
   convertJpegToPng,
 } from "../constant/Utils";
+import { appBasename } from "../constant/appinfo";
 import Header from "../components/pdf/PdfHeader";
 import RenderPdf from "../components/pdf/RenderPdf";
 import DefaultSignature from "../components/pdf/DefaultSignature";
@@ -169,8 +170,9 @@ function PdfRequestFiles(
   let sendmail;
   let getDocId = "";
   let contactBookId = "";
-  const route =
-    window.location.pathname;
+  const route = appBasename && window.location.pathname.startsWith(appBasename)
+    ? window.location.pathname.slice(appBasename.length)
+    : window.location.pathname;
   const getQuery =
     window.location?.search?.split("?"); //['','sendmail=false']
   if (getQuery) {
