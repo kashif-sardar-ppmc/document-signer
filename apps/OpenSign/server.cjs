@@ -9,9 +9,38 @@ const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
 
+function loadEnvFile(envPath) {
+  let content;
+  try {
+    content = fs.readFileSync(envPath, "utf8");
+  } catch {
+    return;
+  }
+  for (const line of content.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eq = trimmed.indexOf("=");
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    if (process.env[key] === undefined) {
+      process.env[key] = value;
+    }
+  }
+}
+
+loadEnvFile(path.join(__dirname, ".env"));
+
 const root = path.join(__dirname, "build");
-const port = Number(process.env.PORT) || 3000;
+const port = Number(process.env.PORT) || 9006;
 const host = process.env.HOST || "0.0.0.0";
+const basePath = "/ppmc-doc-signer";
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -127,7 +156,20 @@ const server = http.createServer((req, res) => {
   }
 
   const reqUrl = req.url || "/";
-  const filePath = safeJoin(reqUrl);
+  const reqPathOnly = reqUrl.split("?")[0].split("#")[0];
+
+  if (reqPathOnly === "/" || reqPathOnly === basePath) {
+    res.writeHead(302, { Location: basePath + "/" });
+    return res.end();
+  }
+
+  if (reqPathOnly !== basePath && !reqPathOnly.startsWith(basePath + "/")) {
+    res.writeHead(404, { "Content-Type": "text/plain" });
+    return res.end("Not Found");
+  }
+
+  const strippedUrl = reqUrl.slice(basePath.length) || "/";
+  const filePath = safeJoin(strippedUrl);
   if (!filePath) {
     res.writeHead(400);
     return res.end("Bad Request");

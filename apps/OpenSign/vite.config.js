@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
+    base: "/ppmc-doc-signer/",
     plugins: [
       react(),
       svgr() // Transform SVGs into React components
@@ -33,7 +34,7 @@ export default defineConfig(({ mode }) => {
       }
     },
     server: {
-      port: env.PORT || 3000, // Same port as CRA
+      port: env.PORT || 9006,
       open: true
     },
     test: {

@@ -62,7 +62,7 @@ function App() {
       {isloading ? (
         <AppLoader />
       ) : (
-        <BrowserRouter>
+        <BrowserRouter basename="/ppmc-doc-signer">
           <Title />
           <Routes>
             <Route element={<ValidateRoute />}>
