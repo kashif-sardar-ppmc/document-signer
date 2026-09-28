@@ -328,7 +328,7 @@ export default async function createBatchDocs(request) {
 
   const Ip = request?.headers?.['x-real-ip'] || '';
   // Access the host from the headers
-  const publicUrl = request.headers.public_url;
+  const publicUrl = request.headers.public_url || process.env.APP_URL;
   const parseConfig = {
     baseURL: serverUrl,
     headers: {

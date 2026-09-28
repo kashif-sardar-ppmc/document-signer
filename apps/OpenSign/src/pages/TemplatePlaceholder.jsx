@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import RenderAllPdfPage from "../components/pdf/RenderAllPdfPage";
 import { useParams, useNavigate, Link } from "react-router";
+import { appBasename } from "../constant/appinfo";
 import axios from "axios";
 import "../styles/signature.css";
 import WidgetComponent from "../components/pdf/WidgetComponent";
@@ -1782,7 +1783,7 @@ const TemplatePlaceholder = () => {
     let signerMail = signersdata;
     for (let i = 0; i < signerMail.length; i++) {
       const objectId = signerMail[i].objectId;
-      const hostUrl = window.location.origin + (process.env.PUBLIC_URL || '');
+      const hostUrl = window.location.origin + appBasename;
       const sendMail = false;
       //encode this url value `${documentId}/${signerMail[i].Email}/${objectId}` to base64 using `btoa` function
       const encodeBase64 = btoa(

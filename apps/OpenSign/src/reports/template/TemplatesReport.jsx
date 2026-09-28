@@ -22,7 +22,7 @@ import {
 } from "../../constant/Utils";
 import BulkSendUi from "../../components/bulksend/BulkSendUi";
 import Loader from "../../primitives/Loader";
-import { serverUrl_fn } from "../../constant/appinfo";
+import { serverUrl_fn, appBasename } from "../../constant/appinfo";
 import { Trans, useTranslation } from "react-i18next";
 import { useElSize } from "../../hook/useElSize";
 import LottieWithLoader from "../../primitives/DotLottieReact";
@@ -432,7 +432,7 @@ const TemplatesReport = (props) => {
   };
   const handleShare = (item) => {
     setActLoader({ [item.objectId]: true });
-    const host = window.location.origin + (process.env.PUBLIC_URL || '');
+    const host = window.location.origin + appBasename;
     const sendMail = item?.SendMail || false;
     const getUrl = (x) => {
       //encode this url value `${item.objectId}/${x.Email}/${x.objectId}` to base64 using `btoa` function
@@ -574,7 +574,7 @@ const TemplatesReport = (props) => {
       month: "long",
       year: "numeric"
     });
-    const signPdf = `${window.location.origin}${process.env.PUBLIC_URL || ''}/login/${encodeBase64}`;
+    const signPdf = `${window.location.origin}${appBasename}/login/${encodeBase64}`;
     const variables = {
       document_title: doc.Name,
       note: doc?.Note || "",
@@ -605,7 +605,7 @@ const TemplatesReport = (props) => {
       month: "long",
       year: "numeric"
     });
-    const signPdf = `${window.location.origin}${process.env.PUBLIC_URL || ''}/login/${encodeBase64}`;
+    const signPdf = `${window.location.origin}${appBasename}/login/${encodeBase64}`;
     const variables = {
       document_title: doc.Name,
       note: doc?.Note || "",
@@ -652,7 +652,7 @@ const TemplatesReport = (props) => {
       month: "long",
       year: "numeric"
     });
-    const signPdf = `${window.location.origin}${process.env.PUBLIC_URL || ''}/login/${encodeBase64}`;
+    const signPdf = `${window.location.origin}${appBasename}/login/${encodeBase64}`;
     const variables = {
       document_title: doc.Name,
       note: doc?.Note || "",
@@ -1008,7 +1008,7 @@ const TemplatesReport = (props) => {
     let signerMail = signerList;
     for (let i = 0; i < signerMail.length; i++) {
       const objectId = signerMail[i].objectId;
-      const hostUrl = window.location.origin + (process.env.PUBLIC_URL || '');
+      const hostUrl = window.location.origin + appBasename;
       const sendMail = false;
       //encode this url value `${documentId}/${signerMail[i].Email}/${objectId}` to base64 using `btoa` function
       const encodeBase64 = btoa(

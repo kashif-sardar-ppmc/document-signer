@@ -10,7 +10,7 @@ import {
   PDFDict
 } from "pdf-lib";
 import Parse from "parse";
-import { appInfo } from "./appinfo";
+import { appInfo, appBasename } from "./appinfo";
 import { saveAs } from "file-saver";
 import printModule from "print-js";
 import fontkit from "@pdf-lib/fontkit";
@@ -4626,7 +4626,7 @@ export const sendEmailToSigners = async (
         sessionToken: localStorage.getItem("accesstoken")
       };
       const objectId = signerMail[i].objectId;
-      const hostUrl = window.location.origin + (process.env.PUBLIC_URL || '');
+      const hostUrl = window.location.origin + appBasename;
       //encode this url value `${pdfDetails?.[0].objectId}/${signerMail[i].Email}/${objectId}` to base64 using `btoa` function
       const encodeBase64 = btoa(
         `${pdfDetails[0]?.objectId}/${signerMail[i].Email}/${objectId}`

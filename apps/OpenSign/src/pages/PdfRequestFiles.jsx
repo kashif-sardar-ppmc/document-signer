@@ -855,7 +855,7 @@ function PdfRequestFiles(
                           sessionToken: localStorage.getItem("accesstoken")
                         };
                         const objectId = user?.objectId;
-                        const hostUrl = window.location.origin + (process.env.PUBLIC_URL || '');
+                        const hostUrl = window.location.origin + appBasename;
                         //encode this url value `${pdfDetails?.[0].objectId}/${user.Email}/${objectId}` to base64 using `btoa` function
                         let encodeBase64;
                         if (objectId) {
@@ -946,7 +946,7 @@ function PdfRequestFiles(
                       : "";
                     const params =
                           `docid=${updatedDoc.updatedPdfDetails[0].objectId}&docurl=${encodeURIComponent(url)}${isCompleted}${fileAdapter}`;
-                    window.location.href = `${process.env.PUBLIC_URL}/success?${params}`;
+                    window.location.href = `${appBasename}/success?${params}`;
                   }
                 } else {
                   setIsUiLoading(false);

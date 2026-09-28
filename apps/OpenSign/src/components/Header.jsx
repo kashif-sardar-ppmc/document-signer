@@ -142,7 +142,7 @@ const Header = ({ isConsole, setIsLoggingOut }) => {
         <div className="flex-1 ml-2">
           <div
             onClick={() => navigate("/dashboard/35KBoSgoAK")}
-            className="h-[25px] md:h-[40px] w-auto overflow-hidden cursor-pointer"
+            className="h-[40px] md:h-[56px] w-auto overflow-hidden cursor-pointer"
           >
             {applogo && (
               <img

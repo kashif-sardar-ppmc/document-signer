@@ -7,6 +7,7 @@ import RenderAllPdfPage from "../components/pdf/RenderAllPdfPage";
 import WidgetComponent from "../components/pdf/WidgetComponent";
 import Tour from "../primitives/Tour";
 import { useLocation, useParams } from "react-router";
+import { appBasename } from "../constant/appinfo";
 import SignerListPlace from "../components/pdf/SignerListPlace";
 import Header from "../components/pdf/PdfHeader";
 import ShareButton from "../primitives/ShareButton";
@@ -1165,7 +1166,7 @@ function PlaceHolderSign() {
     let signerMail = signersdata;
     for (let i = 0; i < signerMail.length; i++) {
       const objectId = signerMail[i].objectId;
-      const hostUrl = window.location.origin + (process.env.PUBLIC_URL || '');
+      const hostUrl = window.location.origin + appBasename;
       const sendMail = false;
       //encode this url value `${pdfDetails?.[0].objectId}/${signerMail[i].Email}/${objectId}` to base64 using `btoa` function
       const encodeBase64 = btoa(
