@@ -1165,7 +1165,7 @@ function PlaceHolderSign() {
     let signerMail = signersdata;
     for (let i = 0; i < signerMail.length; i++) {
       const objectId = signerMail[i].objectId;
-      const hostUrl = window.location.origin;
+      const hostUrl = window.location.origin + (process.env.PUBLIC_URL || '');
       const sendMail = false;
       //encode this url value `${pdfDetails?.[0].objectId}/${signerMail[i].Email}/${objectId}` to base64 using `btoa` function
       const encodeBase64 = btoa(

@@ -4626,7 +4626,7 @@ export const sendEmailToSigners = async (
         sessionToken: localStorage.getItem("accesstoken")
       };
       const objectId = signerMail[i].objectId;
-      const hostUrl = window.location.origin;
+      const hostUrl = window.location.origin + (process.env.PUBLIC_URL || '');
       //encode this url value `${pdfDetails?.[0].objectId}/${signerMail[i].Email}/${objectId}` to base64 using `btoa` function
       const encodeBase64 = btoa(
         `${pdfDetails[0]?.objectId}/${signerMail[i].Email}/${objectId}`

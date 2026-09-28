@@ -41,8 +41,10 @@ async function sendMailProvider(req) {
     const from = req.params.from || '';
     const mailsender = smtpenable ? process.env.SMTP_USER_EMAIL : process.env.MAILGUN_SENDER;
     const replyto = req.params?.replyto || '';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const fromDisplay = (from && !emailRegex.test(from)) ? from : (process.env.SMTP_FROM_NAME || from);
     const messageParams = {
-      from: from + ' <' + mailsender + '>',
+      from: fromDisplay + ' <' + mailsender + '>',
       to: req.params.recipient,
       subject: req.params.subject,
       text: req.params.text || 'mail',

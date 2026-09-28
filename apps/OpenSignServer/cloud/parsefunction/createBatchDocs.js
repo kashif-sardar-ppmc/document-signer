@@ -135,7 +135,7 @@ async function sendMail(document, publicUrl) {
         'X-Parse-Application-Id': appId,
       };
       const objectId = signerMail[i]?.signerObjId;
-      const hostUrl = baseUrl.origin;
+      const hostUrl = (baseUrl.origin + baseUrl.pathname).replace(/\/$/, '');
       let encodeBase64;
       let existSigner = {};
       if (objectId) {

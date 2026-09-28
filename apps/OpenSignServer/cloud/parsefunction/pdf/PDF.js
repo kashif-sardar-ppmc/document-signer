@@ -392,7 +392,7 @@ async function PDF(req) {
     const mailProvider = req.params.mailProvider || '';
     const sign = req.params.signature || '';
     const auditActivity = 'Signed';
-    const publicUrl = req.headers.public_url;
+    const publicUrl = req.headers.public_url || process.env.APP_URL;
     // below bode is used to get info of docId
     const docQuery = new Parse.Query('contracts_Document');
     docQuery.include('ExtUserPtr,Signers,ExtUserPtr.TenantId,Bcc,Cc,CreatedBy');

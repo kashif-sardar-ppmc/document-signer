@@ -48,7 +48,7 @@ export default async function declinedocument(request) {
   const reason = request.params?.reason || '';
   const userId = request.params.userId;
   const declineBy = { __type: 'Pointer', className: '_User', objectId: userId };
-  const publicUrl = request.headers.public_url;
+  const publicUrl = request.headers.public_url || process.env.APP_URL;
   if (!docId) {
     throw new Parse.Error(Parse.Error.SCRIPT_FAILED, 'missing parameter docId.');
   }

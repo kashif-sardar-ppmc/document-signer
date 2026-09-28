@@ -398,7 +398,7 @@ const DocumentsReport = (props) => {
   };
   const handleShare = (item) => {
     setActLoader({ [item.objectId]: true });
-    const host = window.location.origin;
+    const host = window.location.origin + (process.env.PUBLIC_URL || '');
     const sendMail = item?.SendMail || false;
     const getUrl = (x) => {
       //encode this url value `${item.objectId}/${x.Email}/${x.objectId}` to base64 using `btoa` function
@@ -539,7 +539,7 @@ const DocumentsReport = (props) => {
       month: "long",
       year: "numeric"
     });
-    const signPdf = `${window.location.origin}/login/${encodeBase64}`;
+    const signPdf = `${window.location.origin}${process.env.PUBLIC_URL || ''}/login/${encodeBase64}`;
     const variables = {
       document_title: doc.Name,
       note: doc?.Note || "",
@@ -571,7 +571,7 @@ const DocumentsReport = (props) => {
       month: "long",
       year: "numeric"
     });
-    const signPdf = `${window.location.origin}/login/${encodeBase64}`;
+    const signPdf = `${window.location.origin}${process.env.PUBLIC_URL || ''}/login/${encodeBase64}`;
     const variables = {
       document_title: doc.Name,
       note: doc?.Note || "",
@@ -618,7 +618,7 @@ const DocumentsReport = (props) => {
       month: "long",
       year: "numeric"
     });
-    const signPdf = `${window.location.origin}/login/${encodeBase64}`;
+    const signPdf = `${window.location.origin}${process.env.PUBLIC_URL || ''}/login/${encodeBase64}`;
     const variables = {
       document_title: doc.Name,
       note: doc?.Note || "",
@@ -1003,7 +1003,7 @@ const DocumentsReport = (props) => {
     let signerMail = signerList;
     for (let i = 0; i < signerMail.length; i++) {
       const objectId = signerMail[i].objectId;
-      const hostUrl = window.location.origin;
+      const hostUrl = window.location.origin + (process.env.PUBLIC_URL || '');
       const sendMail = false;
       //encode this url value `${documentId}/${signerMail[i].Email}/${objectId}` to base64 using `btoa` function
       const encodeBase64 = btoa(
