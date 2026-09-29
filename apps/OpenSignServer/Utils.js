@@ -17,7 +17,15 @@ dotenv.config({ quiet: true });
 
 export const cloudServerUrl = process.env.SERVER_URL || 'http://localhost:8080/app';
 export const serverAppId = process.env.APP_ID || 'opensign';
-export const appName = 'OpenSign™';
+export const appName = 'PPMC e-Sign';
+// Shared brand tokens used to keep every server-generated email consistent
+// with the PPMC e-Sign govt-green portal theme and the dashboard logo.
+export const brandLogoUrl = `${process.env.APP_URL || ''}/assets/images/logo.png`;
+export const brandColor = '#0F7A3D';
+export const brandSoftBg = '#F1F8F2';
+export const brandBorder = '#DCEEE0';
+export const brandTextColor = '#14231A';
+export const brandMutedTextColor = '#5A6B60';
 export const prefillDraftDocWidget = ['date', 'textbox', 'checkbox', 'radio button', 'image'];
 export const prefillDraftTemWidget = [
   'date',
@@ -666,33 +674,34 @@ export const getSecureUrl = url => {
 };
 
 export const mailTemplate = param => {
-  const themeColor = '#47a3ad';
   const subject = `${param.senderName} has requested you to sign "${param.title}"`;
   const AppName = appName;
-  const logo = `<img src='https://qikinnovation.ams3.digitaloceanspaces.com/logo.png' height='50' />`;
+  const logo = `<div style='padding:20px 24px;border-bottom:3px solid ${brandColor};'><img src='${brandLogoUrl}' alt='${AppName}' height='44' style='display:block;border:0;' /></div>`;
+
+  const detailRow = (label, value) =>
+    value
+      ? `<tr><td style='padding:6px 16px 6px 0;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${brandTextColor};white-space:nowrap;'>${label}</td><td style='padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${brandMutedTextColor};'>${value}</td></tr>`
+      : '';
 
   const body =
-    "<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8' /></head><body><div style='background-color:#f5f5f5;padding:20px'><div style='background:white;padding-bottom:20px'><div style='padding:10px'>" +
+    `<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8' /></head><body><div style='background-color:${brandSoftBg};padding:24px 12px;font-family:Arial, Helvetica, sans-serif;'><div style='max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;overflow:hidden;border:1px solid ${brandBorder};'>` +
     logo +
-    `</div><div style='padding:2px;font-family:system-ui;background-color:${themeColor}'><p style='font-size:20px;font-weight:400;color:white;padding-left:20px'>Digital Signature Request</p></div><div><p style='padding:20px;font-size:14px;margin-bottom:10px'>` +
+    `<div style='background-color:${brandColor};padding:14px 24px;'><p style='margin:0;font-size:18px;font-weight:600;color:#ffffff;'>Digital Signature Request</p></div><div style='padding:28px 24px;'><p style='margin:0 0 20px 0;font-size:14px;color:${brandTextColor};line-height:1.6;'>` +
     param.senderName +
     ' has requested you to review and sign <strong>' +
     param.title +
-    "</strong>.</p><div style='padding: 5px 0px 5px 25px;display:flex;flex-direction:row;justify-content:space-around'><table><tr><td style='font-weight:bold;font-family:sans-serif;font-size:15px'>Sender</td><td></td><td style='color:#626363;font-weight:bold'>" +
-    param.senderMail +
-    "</td></tr><tr><td style='font-weight:bold;font-family:sans-serif;font-size:15px'>Organization</td><td></td><td style='color:#626363;font-weight:bold'> " +
-    param.organization +
-    "</td></tr><tr><td style='font-weight:bold;font-family:sans-serif;font-size:15px'>Expires on</td><td></td><td style='color:#626363;font-weight:bold'>" +
-    param.localExpireDate +
-    "</td></tr><tr><td style='font-weight:bold;font-family:sans-serif;font-size:15px'>Note</td><td></td><td style='color:#626363;font-weight:bold'>" +
-    param.note +
-    "</td></tr><tr><td></td><td></td></tr></table></div> <div style='margin-left:70px'><a target=_blank href=" +
+    `</strong>.</p><table style='border-collapse:collapse;margin-bottom:24px;'>` +
+    detailRow('Sender', param.senderMail) +
+    detailRow('Organization', param.organization) +
+    detailRow('Expires on', param.localExpireDate) +
+    detailRow('Note', param.note) +
+    `</table><div style='text-align:center;margin:0 0 8px 0;'><a target=_blank href=` +
     param.signingUrl +
-    "><button style='padding:12px;background-color:#d46b0f;color:white;border:0px;font-weight:bold;margin-top:30px'>Sign here</button></a></div><div style='display:flex;justify-content:center;margin-top:10px'></div></div></div><div><p> This is an automated email from " +
+    ` style='background-color:${brandColor};color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:12px 34px;border-radius:6px;display:inline-block;'>Sign here</a></div></div><div style='background-color:${brandSoftBg};padding:14px 24px;border-top:1px solid ${brandBorder};'><p style='margin:0 0 4px 0;font-size:11px;color:${brandMutedTextColor};'>This is an automated email from ` +
     AppName +
     '. For any queries regarding this email, please contact the sender ' +
     param.senderMail +
-    ` directly.</p></div></div></body></html>`;
+    ` directly.</p><p style='margin:0;font-size:11px;color:${brandMutedTextColor};'>Power Planning &amp; Monitoring Company &middot; Ministry of Energy &middot; Govt. of Pakistan</p></div></div></div></body></html>`;
 
   return { subject, body };
 };

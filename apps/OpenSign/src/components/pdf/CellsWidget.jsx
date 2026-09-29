@@ -106,7 +106,7 @@ export default function CellsWidget({
           onPointerDown={onTopHandlePointerDown}
         >
           <svg
-            className="w-4 h-4 text-blue-600"
+            className="w-4 h-4 op-text-primary"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"

@@ -80,17 +80,17 @@ module.exports = {
     themes: [
       {
         opensigndark: {
-          primary: "#007ACC", // VS Code blue - CTA & highlight color
+          primary: "#2E9E5B", // PPMC govt-green - CTA & highlight color
           "primary-content": "#FFFFFF",
 
-          secondary: "#1F2937", // Sidebar background (darker slate)
-          "secondary-content": "#E5E7EB",
+          secondary: "#132A1D", // Sidebar background (dark green-black)
+          "secondary-content": "#E3EFE6",
 
-          accent: "#4A9EFF", // Lighter VS Code blue for hover, minor CTA
-          "accent-content": "#FFFFFF",
+          accent: "#57C775", // Lighter green for hover, minor CTA
+          "accent-content": "#0B2312",
 
-          neutral: "#3C3C3C", // VS Code inactive/disabled element background
-          "neutral-content": "#CCCCCC", // VS Code inactive text color
+          neutral: "#3C3C3C", // Inactive/disabled element background
+          "neutral-content": "#CCCCCC", // Inactive text color
 
           "base-100": "#121212", // App background
           "base-200": "#181818", // Slight elevation (cards)
@@ -122,26 +122,26 @@ module.exports = {
       },
       {
         opensigncss: {
-          primary: "#002864",
-          "primary-content": "#cacccf",
-          secondary: "#29354a",
-          "secondary-content": "#c8d1e0",
-          accent: "#E10032",
-          "accent-content": "#ffd8d5",
-          neutral: "#c1ccdb",
+          primary: "#0F7A3D", // PPMC govt-green - CTA, header & highlight color
+          "primary-content": "#FFFFFF",
+          secondary: "#0B4B27", // Deep green - "Out for signatures" panel etc.
+          "secondary-content": "#FFFFFF",
+          accent: "#4CAF50", // Lighter green for hover, minor CTA
+          "accent-content": "#FFFFFF",
+          neutral: "#D9EEDD", // Soft green-tinted neutral surface
           "neutral-content": "#111312",
           "base-100": "#ffffff",
-          "base-200": "#dedede",
-          "base-300": "#bebebe",
-          "base-content": "#161616",
+          "base-200": "#F1F8F2",
+          "base-300": "#DCEEE0",
+          "base-content": "#14231A",
           info: "#00b6ff",
           "info-content": "#f5f5f4",
           success: "#00a96e",
           "success-content": "#f5f5f4",
           warning: "#ffbe00",
-          "warning-content": "#ccd9e8",
-          error: "#ffa1a7",
-          "error-content": "#16090a",
+          "warning-content": "#3a2c00",
+          error: "#e11d3f",
+          "error-content": "#ffffff",
           "--rounded-btn": "1.9rem",
           "--tab-border": "2px",
           "--tab-radius": "0.7rem"

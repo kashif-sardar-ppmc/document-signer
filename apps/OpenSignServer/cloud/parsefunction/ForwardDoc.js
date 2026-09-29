@@ -1,4 +1,12 @@
-import { appName } from '../../Utils.js';
+import {
+  appName,
+  brandLogoUrl,
+  brandColor,
+  brandSoftBg,
+  brandBorder,
+  brandTextColor,
+  brandMutedTextColor,
+} from '../../Utils.js';
 import sendMailWithAttachment from './sendMailWithAttachment.js';
 
 export default async function forwardDoc(request) {
@@ -35,9 +43,7 @@ export default async function forwardDoc(request) {
       try {
         let mailRes;
         for (let i = 0; i < recipients.length; i++) {
-          const logo = `<img src='https://qikinnovation.ams3.digitaloceanspaces.com/logo.png' height='50' style='padding:20px'/>`;
-
-          const themeColor = '#47a3ad';
+          const logo = `<div style='padding:20px 24px;border-bottom:3px solid ${brandColor};'><img src='${brandLogoUrl}' alt='${TenantAppName}' height='44' style='display:block;border:0;'/></div>`;
 
           let params = {
             extUserId: extUserId,
@@ -48,10 +54,10 @@ export default async function forwardDoc(request) {
             replyto: replyTo || '',
             from: from,
             html:
-              `<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/></head><body><div style='background-color:#f5f5f5;padding:20px'><div style='background-color:white'><div>` +
-              `${logo}</div><div style='padding:2px;font-family:system-ui;background-color:${themeColor}'><p style='font-size:20px;font-weight:400;color:white;padding-left:20px'>Document Copy</p></div><div>` +
-              `<p style='padding:20px;font-family:system-ui;font-size:14px'>A copy of the document <strong>${docName}</strong> is attached to this email. Kindly download the document from the attachment.</p>` +
-              `</div></div><div><p>This is an automated email from ${TenantAppName}. For any queries regarding this email, please contact the sender ${replyTo} directly.</p></div></div></body></html>`,
+              `<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/></head><body><div style='background-color:${brandSoftBg};padding:24px 12px;font-family:Arial, Helvetica, sans-serif;'><div style='max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;overflow:hidden;border:1px solid ${brandBorder};'>` +
+              `${logo}<div style='background-color:${brandColor};padding:14px 24px;'><p style='margin:0;font-size:18px;font-weight:600;color:#ffffff;'>Document Copy</p></div><div style='padding:28px 24px;'>` +
+              `<p style='margin:0;font-size:14px;color:${brandTextColor};line-height:1.6;'>A copy of the document <strong>${docName}</strong> is attached to this email. Kindly download the document from the attachment.</p>` +
+              `</div><div style='background-color:${brandSoftBg};padding:14px 24px;border-top:1px solid ${brandBorder};'><p style='margin:0 0 4px 0;font-size:11px;color:${brandMutedTextColor};'>This is an automated email from ${TenantAppName}. For any queries regarding this email, please contact the sender ${replyTo} directly.</p><p style='margin:0;font-size:11px;color:${brandMutedTextColor};'>Power Planning &amp; Monitoring Company &middot; Ministry of Energy &middot; Govt. of Pakistan</p></div></div></div></body></html>`,
           };
           mailRes = await sendMailWithAttachment(params);
           // console.log('mailRes', mailRes);

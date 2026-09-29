@@ -812,7 +812,7 @@ const Forms = (props) => {
               <div className="flex items-center gap-x-2">
                 <div className="h-2 rounded-full w-[200px] md:w-[400px] bg-gray-200">
                   <div
-                    className="h-2 rounded-full bg-blue-500"
+                    className="h-2 rounded-full op-bg-primary"
                     style={{ width: `${percentage}%` }}
                   ></div>
                 </div>

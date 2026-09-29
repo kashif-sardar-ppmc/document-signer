@@ -1,4 +1,4 @@
-import { appName } from '../../../Utils.js';
+import { appName, brandLogoUrl, brandColor } from '../../../Utils.js';
 import sendSystemMail from '../../parsefunction/sendSystemMail.js';
 
 // Constants (adjust to your preference)
@@ -26,10 +26,14 @@ export async function sendDeleteOtpEmail(extUser, otp) {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f6f7fb;">
       <tr>
         <td align="center" style="padding:24px;">
-          <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e9ecf1;border-radius:8px;padding:20px;">
+          <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e9ecf1;border-radius:8px;overflow:hidden;">
             <tr>
-              <td align="left" style="font-size:16px;color:#0f172a;">
-                <div style="font-weight:bold;margin-bottom:8px;">${appName}</div>
+              <td style="padding:16px 20px;border-bottom:3px solid ${brandColor};">
+                <img src="${brandLogoUrl}" alt="${appName}" height="36" style="display:block;border:0;" />
+              </td>
+            </tr>
+            <tr>
+              <td align="left" style="font-size:16px;color:#0f172a;padding:20px;">
                 <div style="font-size:18px;margin:0 0 12px 0;">Your verification code</div>
                 <div style="display:inline-block;border:1px solid #e9ecf1;border-radius:6px;background:#f8fafc;padding:10px 14px;margin-bottom:10px;">
                   <span style="font-family:Consolas,'Courier New',monospace;font-size:24px;letter-spacing:6px;color:#0f172a;">${otp}</span>

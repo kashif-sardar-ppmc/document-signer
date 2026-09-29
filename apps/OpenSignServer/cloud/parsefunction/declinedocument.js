@@ -1,11 +1,20 @@
-import { appName } from '../../Utils.js';
+import {
+  appName,
+  brandLogoUrl,
+  brandColor,
+  brandSoftBg,
+  brandBorder,
+  brandTextColor,
+  brandMutedTextColor,
+} from '../../Utils.js';
 import sendSystemMail from './sendSystemMail.js';
+
+const declineColor = '#B3261E';
 
 async function sendDeclineMail(doc, publicUrl, userId, reason) {
   try {
     const TenantAppName = appName;
-    const logo =
-      "<img src='https://qikinnovation.ams3.digitaloceanspaces.com/logo.png' height='50' style='padding:20px'/>";
+    const logo = `<div style='padding:20px 24px;border-bottom:3px solid ${brandColor};'><img src='${brandLogoUrl}' alt='${TenantAppName}' height='44' style='display:block;border:0;'/></div>`;
 
     const removePrefill =
       doc?.Placeholders?.length > 0 && doc?.Placeholders?.filter(x => x?.Role !== 'prefill');
@@ -22,13 +31,13 @@ async function sendDeclineMail(doc, publicUrl, userId, reason) {
     const viewDocUrl = `${publicUrl}/recipientSignPdf/${doc.objectId}`;
     const subject = `Document "${pdfName}" has been declined by ${signerName}`;
     const body =
-      "<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/></head><body><div style='background-color:#f5f5f5;padding:20px'><div style='background-color:white'>" +
-      `<div>${logo}</div><div style='padding:2px;font-family:system-ui;background-color:#47a3ad'><p style='font-size:20px;font-weight:400;color:white;padding-left:20px'>Document declined by ${signerName}</p>` +
-      `</div><div style='padding:20px;font-family:system-ui;font-size:14px'><p>Dear ${creatorName},</p>` +
-      `<p>${pdfName} has been declined by ${signerName} "${signerEmail}" on ${new Date().toLocaleDateString()}.</p>` +
-      `<p>Decline Reason: ${reason || 'Not specified'}</p>` +
-      `<p><a href=${viewDocUrl} target=_blank>View Document</a></p></div></div><div><p>This is an automated email from ${TenantAppName}. For any queries regarding this email, ` +
-      `please contact the sender ${creatorEmail} directly.</p></div></div></body></html>`;
+      `<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/></head><body><div style='background-color:${brandSoftBg};padding:24px 12px;font-family:Arial, Helvetica, sans-serif;'><div style='max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;overflow:hidden;border:1px solid ${brandBorder};'>` +
+      `${logo}<div style='background-color:${declineColor};padding:14px 24px;'><p style='margin:0;font-size:18px;font-weight:600;color:#ffffff;'>Document declined by ${signerName}</p>` +
+      `</div><div style='padding:28px 24px;'><p style='margin:0 0 16px 0;font-size:14px;color:${brandTextColor};'>Dear ${creatorName},</p>` +
+      `<p style='margin:0 0 12px 0;font-size:14px;color:${brandTextColor};line-height:1.6;'>${pdfName} has been declined by ${signerName} "${signerEmail}" on ${new Date().toLocaleDateString()}.</p>` +
+      `<p style='margin:0 0 20px 0;font-size:14px;color:${brandTextColor};'><strong>Decline Reason:</strong> ${reason || 'Not specified'}</p>` +
+      `<div style='text-align:center;'><a href=${viewDocUrl} target=_blank style='background-color:${brandColor};color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:12px 34px;border-radius:6px;display:inline-block;'>View Document</a></div></div><div style='background-color:${brandSoftBg};padding:14px 24px;border-top:1px solid ${brandBorder};'><p style='margin:0 0 4px 0;font-size:11px;color:${brandMutedTextColor};'>This is an automated email from ${TenantAppName}. For any queries regarding this email, ` +
+      `please contact the sender ${creatorEmail} directly.</p><p style='margin:0;font-size:11px;color:${brandMutedTextColor};'>Power Planning &amp; Monitoring Company &middot; Ministry of Energy &middot; Govt. of Pakistan</p></div></div></div></body></html>`;
 
     const params = {
       extUserId: sender.objectId,

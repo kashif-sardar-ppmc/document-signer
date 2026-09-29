@@ -28,8 +28,8 @@ export default async function GenerateCertificate(docDetails) {
   const startX = 15;
   const startY = 15;
   const borderColor = rgb(0.12, 0.12, 0.12);
-  const titleColor = rgb(0, 0.2, 0.4); //rgb(0, 0.53, 0.71);
-  const titleUnderline = rgb(0, 0.2, 0.4); // rgb(0.12, 0.12, 0.12);
+  const titleColor = rgb(0.059, 0.478, 0.239); // PPMC govt-green (#0F7A3D)
+  const titleUnderline = rgb(0.059, 0.478, 0.239);
   const title = 25;
   const subtitle = 16;
   const text = 13;

@@ -745,14 +745,14 @@ const VerifyDocument = () => {
                       className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden"
                     >
                       {/* Header Section */}
-                      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
+                      <div className="bg-gradient-to-r from-[#0F7A3D] to-[#0B4B27] text-white p-6">
                         <div className="flex items-center space-x-3">
                           <span className="text-2xl">🔏</span>
                           <div>
                             <h4 className="text-xl font-bold">
                               Signature Details
                             </h4>
-                            <p className="text-blue-100 text-sm">
+                            <p className="text-green-100 text-sm">
                               Digital Certificate Information
                             </p>
                           </div>

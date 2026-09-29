@@ -1,4 +1,4 @@
-import { appName, smtpenable } from '../../Utils.js';
+import { appName, smtpenable, brandLogoUrl, brandColor } from '../../Utils.js';
 
 export const errHtml = err => {
   return `<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /><title>Reset Password</title></head>
@@ -56,7 +56,11 @@ const sendDeleteUserMail = async req => {
 </head>
 <body style="margin:0; padding:0; font-family:Arial, sans-serif; background-color:#f4f4f4; color:#333;">
     <div
-        style="max-width:600px; margin:50px auto; padding:30px; background-color:#ffffff; border:1px solid #e0e0e0; border-radius:8px;">
+        style="max-width:600px; margin:50px auto; background-color:#ffffff; border:1px solid #e0e0e0; border-radius:8px; overflow:hidden;">
+        <div style="padding:20px 30px; border-bottom:3px solid ${brandColor};">
+            <img src="${brandLogoUrl}" alt="${app}" height="44" style="display:block;border:0;" />
+        </div>
+        <div style="padding:30px;">
         <h2 style="color:#d9534f;">Request to Delete Your Account</h2>
         <p style="font-size:16px; line-height:1.5;">
             Hello ${name},
@@ -90,6 +94,7 @@ const sendDeleteUserMail = async req => {
         <p style="font-size:12px; color:#999;">
             &copy; ${new Date().getFullYear()} ${app}. All rights reserved.
         </p>
+        </div>
     </div>
 </body>
 </html>`,

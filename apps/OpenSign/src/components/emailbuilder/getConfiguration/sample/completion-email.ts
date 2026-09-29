@@ -1,9 +1,10 @@
 import { TEditorConfiguration } from "../../documents/editor/core";
+import { appBasename } from "../../../../constant/appinfo";
 
 const getCompletionEmail = (
 ): TEditorConfiguration => {
   const appName =
-    "OpenSign™";
+    "PPMC e-Sign";
 
   const logoBlock =
         {
@@ -16,7 +17,7 @@ const getCompletionEmail = (
               props: {
                 width: null,
                 height: 50,
-                url: "https://qikinnovation.ams3.digitaloceanspaces.com/logo.png",
+                url: `${window.location.origin}${appBasename}/assets/images/logo.png`,
                 alt: "logo",
                 linkHref: null,
                 contentAlignment: "middle"
@@ -31,7 +32,7 @@ const getCompletionEmail = (
     root: {
       type: "EmailLayout",
       data: {
-        backdropColor: "#f5f5f5",
+        backdropColor: "#F1F8F2",
         canvasColor: "#FFFFFF",
         canvasWidth: 600,
         textColor: "#242424",
@@ -50,7 +51,7 @@ const getCompletionEmail = (
       data: {
         style: {
           color: "#FFFFFF",
-          backgroundColor: "#47A3AD",
+          backgroundColor: "#0F7A3D",
           fontSize: 20,
           fontWeight: "bold",
           padding: {
@@ -219,7 +220,7 @@ const getCompletionEmail = (
       type: "Html",
       data: {
         style: {
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#F1F8F2",
           fontSize: 14,
           textAlign: null,
           padding: {
