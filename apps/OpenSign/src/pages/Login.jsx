@@ -458,14 +458,16 @@ function Login() {
                 className="login-blob login-blob-delay pointer-events-none absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl"
               />
 
-              <div className="relative z-10 inline-flex self-start bg-white/95 rounded-lg px-4 py-3 shadow-lg">
-                {image && (
-                  <img
-                    src={image}
-                    className="h-14 lg:h-16 w-auto object-contain"
-                    alt="applogo"
-                  />
-                )}
+              <div className="relative z-10 flex justify-center">
+                <div className="inline-flex bg-white/95 rounded-lg px-6 py-4 shadow-lg">
+                  {image && (
+                    <img
+                      src={image}
+                      className="h-20 lg:h-24 w-auto object-contain"
+                      alt="applogo"
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="relative z-10 my-auto py-10 space-y-6">
