@@ -1,7 +1,11 @@
-import crypto from 'node:crypto';
+import { verifyCaptcha } from './mathCaptcha.js';
 export default async function loginUser(request) {
   const username = request.params.email;
   const password = request.params.password;
+
+  if (!verifyCaptcha(request.params.captchaToken, request.params.captchaAnswer)) {
+    throw new Parse.Error(Parse.Error.VALIDATION_ERROR, 'invalid_captcha');
+  }
 
   if (username && password) {
     try {

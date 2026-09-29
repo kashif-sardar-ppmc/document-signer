@@ -43,13 +43,26 @@ function Login() {
     Company: "",
     Destination: ""
   });
+  const [captcha, setCaptcha] = useState({ question: "", token: "" });
+  const [captchaAnswer, setCaptchaAnswer] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [image, setImage] = useState();
   const [errMsg, setErrMsg] = useState();
   useEffect(() => {
     handleUserExist();
+    loadCaptcha();
     // eslint-disable-next-line
   }, []);
+
+  const loadCaptcha = async () => {
+    setCaptchaAnswer("");
+    try {
+      const res = await Parse.Cloud.run("getcaptcha");
+      setCaptcha({ question: res?.question || "", token: res?.token || "" });
+    } catch (error) {
+      console.error("Error loading captcha", error);
+    }
+  };
 
   const handleUserExist = async () => {
     checkUserExt();
@@ -112,7 +125,12 @@ function Login() {
     try {
       setState({ ...state, loading: true });
       localStorage.setItem("appLogo", appInfo.applogo);
-      const _user = await Parse.Cloud.run("loginuser", { email, password });
+      const _user = await Parse.Cloud.run("loginuser", {
+        email,
+        password,
+        captchaToken: captcha.token,
+        captchaAnswer: captchaAnswer.trim()
+      });
       if (!_user) {
         setState({ ...state, loading: false });
         return;
@@ -128,7 +146,10 @@ function Login() {
       }
     } catch (error) {
       console.error("Error while logging in user", error);
-      if (error?.code === 1001) {
+      loadCaptcha();
+      if (error?.message === "invalid_captcha") {
+        showToast("danger", "Incorrect captcha answer. Please try again.");
+      } else if (error?.code === 1001) {
         showToast("danger", t("action-prohibited"));
       } else {
         showToast("danger", t("invalid-username-password-region"));
@@ -498,6 +519,32 @@ function Login() {
                                 )}
                               </span>
                             </div>
+                            <hr className="my-1 border-none" />
+                            <label className="block text-xs" htmlFor="captcha">
+                              Captcha: what is{" "}
+                              <span className="font-bold select-none">
+                                {captcha.question || "..."}
+                              </span>{" "}
+                              ?
+                              <button
+                                type="button"
+                                className="ml-2 op-link op-link-primary"
+                                onClick={loadCaptcha}
+                                aria-label="Refresh captcha"
+                              >
+                                <i className="fa-light fa-rotate" />
+                              </button>
+                            </label>
+                            <input
+                              id="captcha"
+                              type="text"
+                              inputMode="numeric"
+                              autoComplete="off"
+                              className="op-input op-input-bordered op-input-sm focus:outline-none hover:border-base-content w-full text-xs"
+                              value={captchaAnswer}
+                              onChange={(e) => setCaptchaAnswer(e.target.value)}
+                              required
+                            />
                           <div className="relative mt-1">
                             <NavLink
                               to="/forgetpassword"

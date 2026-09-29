@@ -175,9 +175,11 @@ app.use(function (req, res, next) {
   // Prefer the configured app URL (which includes any deployment sub-path,
   // e.g. https://host/ppmc-doc-signer) over the bare request host, otherwise
   // links built from this header (decline/notify/view-document emails, bulk
-  // send) lose that sub-path.
+  // send) lose that sub-path. Falls back to this deployment's known public
+  // URL rather than the bare host, since this app is only ever deployed
+  // under the /ppmc-doc-signer sub-path.
   const publicUrl =
-    process.env.APP_URL || process.env.PUBLIC_URL || 'https://' + req?.get('host');
+    process.env.APP_URL || process.env.PUBLIC_URL || 'https://apps.ppmc.gov.pk/ppmc-doc-signer';
   req.headers['public_url'] = publicUrl;
   next();
 });
