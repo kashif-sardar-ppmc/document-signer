@@ -172,7 +172,12 @@ app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(function (req, res, next) {
   req.headers['x-real-ip'] = getUserIP(req);
-  const publicUrl = 'https://' + req?.get('host');
+  // Prefer the configured app URL (which includes any deployment sub-path,
+  // e.g. https://host/ppmc-doc-signer) over the bare request host, otherwise
+  // links built from this header (decline/notify/view-document emails, bulk
+  // send) lose that sub-path.
+  const publicUrl =
+    process.env.APP_URL || process.env.PUBLIC_URL || 'https://' + req?.get('host');
   req.headers['public_url'] = publicUrl;
   next();
 });

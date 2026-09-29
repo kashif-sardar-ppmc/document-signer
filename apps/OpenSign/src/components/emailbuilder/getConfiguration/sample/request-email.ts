@@ -1,5 +1,5 @@
 import { TEditorConfiguration } from "../../documents/editor/core";
-import { appBasename } from "../../../../constant/appinfo";
+import { brandLogoUrl } from "../../../../constant/Utils";
 
 const getRequestEmail = (
 ): TEditorConfiguration => {
@@ -17,7 +17,7 @@ const getRequestEmail = (
               props: {
                 width: null,
                 height: 50,
-                url: `${window.location.origin}${appBasename}/assets/images/logo.png`,
+                url: brandLogoUrl,
                 alt: "logo",
                 linkHref: null,
                 contentAlignment: "middle"
