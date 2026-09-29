@@ -3,9 +3,8 @@ import Parse from "parse";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { NavLink, useNavigate, useLocation } from "react-router";
-import login_img from "../assets/images/login_img.svg";
-import { useWindowSize } from "../hook/useWindowSize";
 import ModalUi from "../primitives/ModalUi";
+import "../styles/login.css";
 import {
   emailRegex,
 } from "../constant/const";
@@ -29,7 +28,6 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { width } = useWindowSize();
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -447,34 +445,103 @@ function Login() {
           <div
             aria-labelledby="loginHeading"
             role="region"
-            className="pb-1 md:pb-4 pt-10 md:px-10 lg:px-16 h-full"
+            className="min-h-screen w-full flex flex-col md:flex-row bg-base-100"
           >
-            <div className="md:p-4 lg:p-10 p-4 bg-base-100 text-base-content op-card">
-              <div className="w-[250px] h-[66px] inline-block overflow-hidden">
+            {/* Brand panel - hidden on small screens */}
+            <div className="hidden md:flex md:w-[44%] lg:w-[42%] relative overflow-hidden bg-gradient-to-br from-[#0B4B27] via-[#0F7A3D] to-[#1AA155] text-white flex-col justify-between p-10 lg:p-14">
+              <div
+                aria-hidden="true"
+                className="login-blob pointer-events-none absolute -top-24 -right-20 w-72 h-72 rounded-full bg-white/10 blur-3xl"
+              />
+              <div
+                aria-hidden="true"
+                className="login-blob login-blob-delay pointer-events-none absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl"
+              />
+
+              <div className="relative z-10 inline-flex self-start bg-white/95 rounded-lg px-4 py-3 shadow-lg">
                 {image && (
                   <img
                     src={image}
-                    className="object-contain h-full"
+                    className="h-14 lg:h-16 w-auto object-contain"
                     alt="applogo"
                   />
                 )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2">
-                <div>
-                  <form onSubmit={handleLoginBtn} aria-label="Login Form">
-                    <h1 className="text-[30px] mt-6">{t("welcome")}</h1>
-                    <fieldset>
-                      <legend className="text-[12px] text-[#878787]">
-                        {t("Login-to-your-account")}
-                      </legend>
-                      <div className="w-full px-6 py-3 my-1 op-card bg-base-100 shadow-md outline outline-1 outline-slate-300/50">
-                        <label className="block text-xs" htmlFor="email">
-                          {t("email")}
-                        </label>
+
+              <div className="relative z-10 my-auto py-10 space-y-6">
+                <h2 className="text-3xl lg:text-[2.35rem] font-bold leading-tight">
+                  Secure e-Signatures, built for Government workflows.
+                </h2>
+                <p className="text-white/80 text-sm lg:text-base max-w-md leading-relaxed">
+                  Request, sign and track documents on a fully auditable,
+                  legally-binding digital signature platform.
+                </p>
+                <ul className="space-y-3 pt-2">
+                  {[
+                    ["fa-shield-check", "Bank-grade encryption & full audit trail"],
+                    ["fa-file-signature", "Legally binding digital signatures"],
+                    ["fa-bolt", "Fast, paperless approvals"]
+                  ].map(([icon, text]) => (
+                    <li
+                      key={text}
+                      className="flex items-center gap-3 text-sm lg:text-[15px] text-white/90"
+                    >
+                      <span className="flex-none w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">
+                        <i className={`fa-light ${icon}`} aria-hidden="true" />
+                      </span>
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <p className="relative z-10 text-xs text-white/60">
+                Power Planning &amp; Monitoring Company &middot; Ministry of
+                Energy &middot; Govt. of Pakistan
+              </p>
+            </div>
+
+            {/* Form panel */}
+            <div className="flex-1 flex items-center justify-center p-6 sm:p-10">
+              <div className="w-full max-w-[420px] login-fade-in">
+                <div className="md:hidden mb-8 flex justify-center">
+                  {image && (
+                    <img src={image} alt="applogo" className="h-14 object-contain" />
+                  )}
+                </div>
+
+                <form onSubmit={handleLoginBtn} aria-label="Login Form">
+                  <h1
+                    id="loginHeading"
+                    className="text-[28px] sm:text-[32px] font-bold text-base-content"
+                  >
+                    {t("welcome")}
+                  </h1>
+                  <p className="text-sm text-base-content/60 mt-1 mb-7">
+                    {t("Login-to-your-account")}
+                  </p>
+
+                  <fieldset className="space-y-4">
+                    <legend className="sr-only">
+                      {t("Login-to-your-account")}
+                    </legend>
+
+                    <div>
+                      <label
+                        className="block text-xs font-semibold text-base-content/70 mb-1.5"
+                        htmlFor="email"
+                      >
+                        {t("email")}
+                      </label>
+                      <div className="relative">
+                        <i
+                          className="fa-light fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40 text-sm pointer-events-none"
+                          aria-hidden="true"
+                        />
                         <input
                           id="email"
                           type="email"
-                          className="op-input op-input-bordered op-input-sm focus:outline-none hover:border-base-content w-full text-xs"
+                          className="op-input op-input-bordered w-full h-11 pl-9 text-sm focus:outline-none transition-colors"
                           name="email"
                           autoComplete="username"
                           value={state.email}
@@ -485,105 +552,131 @@ function Login() {
                           }
                           onInput={(e) => e.target.setCustomValidity("")}
                         />
-                        <hr className="my-1 border-none" />
-                            <label className="block text-xs" htmlFor="password">
-                              {t("password")}
-                            </label>
-                            <div className="relative">
-                              <input
-                                id="password"
-                                type={
-                                  state.passwordVisible ? "text" : "password"
-                                }
-                                className="op-input op-input-bordered op-input-sm focus:outline-none hover:border-base-content w-full text-xs"
-                                name="password"
-                                value={state.password}
-                                autoComplete="current-password"
-                                onChange={handleChange}
-                                onInvalid={(e) =>
-                                  e.target.setCustomValidity(
-                                    t("input-required")
-                                  )
-                                }
-                                onInput={(e) => e.target.setCustomValidity("")}
-                                required
-                              />
-                              <span
-                                className="absolute cursor-pointer top-[50%] right-[10px] -translate-y-[50%] text-base-content"
-                                onClick={togglePasswordVisibility}
-                              >
-                                {state.passwordVisible ? (
-                                  <i className="fa-light fa-eye-slash text-xs pb-1" /> // Close eye icon
-                                ) : (
-                                  <i className="fa-light fa-eye text-xs pb-1 " /> // Open eye icon
-                                )}
-                              </span>
-                            </div>
-                            <hr className="my-1 border-none" />
-                            <label className="block text-xs" htmlFor="captcha">
-                              Captcha: what is{" "}
-                              <span className="font-bold select-none">
-                                {captcha.question || "..."}
-                              </span>{" "}
-                              ?
-                              <button
-                                type="button"
-                                className="ml-2 op-link op-link-primary"
-                                onClick={loadCaptcha}
-                                aria-label="Refresh captcha"
-                              >
-                                <i className="fa-light fa-rotate" />
-                              </button>
-                            </label>
-                            <input
-                              id="captcha"
-                              type="text"
-                              inputMode="numeric"
-                              autoComplete="off"
-                              className="op-input op-input-bordered op-input-sm focus:outline-none hover:border-base-content w-full text-xs"
-                              value={captchaAnswer}
-                              onChange={(e) => setCaptchaAnswer(e.target.value)}
-                              required
-                            />
-                          <div className="relative mt-1">
-                            <NavLink
-                              to="/forgetpassword"
-                              className="text-[13px] op-link op-link-primary underline-offset-1 focus:outline-none ml-1"
-                            >
-                              {t("forgot-password")}?
-                            </NavLink>
-                          </div>
                       </div>
-                    </fieldset>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-center text-xs font-bold mt-2">
-                      <button
-                        type="submit"
-                        className="op-btn op-btn-primary"
-                        disabled={state.loading}
-                      >
-                        {state.loading ? t("loading") : t("login")}
-                      </button>
                     </div>
-                  </form>
-                </div>
-                {width >= 768 && (
-                  <div className="place-self-center">
-                    <div className="mx-auto md:w-[300px] lg:w-[400px] xl:w-[500px]">
-                      <img
-                        src={login_img}
-                        alt="The image illustrates a person from behind, seated at a desk with a four-monitor computer setup, in an environment with a light blue and white color scheme, featuring a potted plant to the right."
-                        width="100%"
+
+                    <div>
+                      <label
+                        className="block text-xs font-semibold text-base-content/70 mb-1.5"
+                        htmlFor="password"
+                      >
+                        {t("password")}
+                      </label>
+                      <div className="relative">
+                        <i
+                          className="fa-light fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40 text-sm pointer-events-none"
+                          aria-hidden="true"
+                        />
+                        <input
+                          id="password"
+                          type={state.passwordVisible ? "text" : "password"}
+                          className="op-input op-input-bordered w-full h-11 pl-9 pr-10 text-sm focus:outline-none transition-colors"
+                          name="password"
+                          value={state.password}
+                          autoComplete="current-password"
+                          onChange={handleChange}
+                          onInvalid={(e) =>
+                            e.target.setCustomValidity(
+                              t("input-required")
+                            )
+                          }
+                          onInput={(e) => e.target.setCustomValidity("")}
+                          required
+                        />
+                        <button
+                          type="button"
+                          className="absolute cursor-pointer top-1/2 right-3 -translate-y-1/2 text-base-content/50 hover:text-base-content transition-colors"
+                          onClick={togglePasswordVisibility}
+                          aria-label={
+                            state.passwordVisible
+                              ? "Hide password"
+                              : "Show password"
+                          }
+                        >
+                          {state.passwordVisible ? (
+                            <i className="fa-light fa-eye-slash text-sm" /> // Close eye icon
+                          ) : (
+                            <i className="fa-light fa-eye text-sm" /> // Open eye icon
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="rounded-box border-2 border-[#0F7A3D]/25 bg-[#0F7A3D]/[0.06] px-4 py-4">
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <label
+                          className="flex items-center gap-2"
+                          htmlFor="captcha"
+                        >
+                          <span className="flex-none w-8 h-8 rounded-full bg-[#0F7A3D]/15 flex items-center justify-center">
+                            <i
+                              className="fa-light fa-shield-halved text-[#0F7A3D] text-sm"
+                              aria-hidden="true"
+                            />
+                          </span>
+                          <span>
+                            <span className="block text-[10px] font-bold uppercase tracking-wide text-[#0F7A3D]/80">
+                              Security Check
+                            </span>
+                            <span className="block text-sm font-semibold text-base-content">
+                              What is{" "}
+                              <span className="font-extrabold text-base tabular-nums select-none">
+                                {captcha.question || "..."}
+                              </span>
+                              ?
+                            </span>
+                          </span>
+                        </label>
+                        <button
+                          type="button"
+                          className="flex-none op-btn op-btn-ghost op-btn-sm op-btn-circle text-[#0F7A3D] hover:bg-[#0F7A3D]/10"
+                          onClick={loadCaptcha}
+                          aria-label="Refresh captcha"
+                        >
+                          <i className="fa-light fa-rotate text-base" />
+                        </button>
+                      </div>
+                      <input
+                        id="captcha"
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="off"
+                        placeholder="Enter your answer"
+                        className="op-input op-input-bordered w-full h-11 text-sm font-semibold bg-base-100 focus:outline-none"
+                        value={captchaAnswer}
+                        onChange={(e) => setCaptchaAnswer(e.target.value)}
+                        required
                       />
                     </div>
-                  </div>
-                )}
+
+                    <div className="flex justify-end">
+                      <NavLink
+                        to="/forgetpassword"
+                        className="text-[13px] op-link op-link-primary underline-offset-2 focus:outline-none"
+                      >
+                        {t("forgot-password")}?
+                      </NavLink>
+                    </div>
+                  </fieldset>
+
+                  <button
+                    type="submit"
+                    className="op-btn op-btn-primary w-full h-11 mt-6 text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
+                    disabled={state.loading}
+                  >
+                    {state.loading ? t("loading") : t("login")}
+                  </button>
+                </form>
+
+                <div className="mt-8 flex justify-center">
+                  <SelectLanguage isProfile />
+                </div>
               </div>
             </div>
-            <SelectLanguage />
-            {state.alertMsg && (
-              <Alert type={state.alertType}>{state.alertMsg}</Alert>
-            )}
           </div>
+          {state.alertMsg && (
+            <Alert type={state.alertType}>{state.alertMsg}</Alert>
+          )}
           <ModalUi
             isOpen={isModal}
             title={t("additional-info")}
