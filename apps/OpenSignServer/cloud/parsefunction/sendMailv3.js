@@ -56,12 +56,18 @@ async function sendMailProvider(req) {
     if (transporterSMTP) {
       const res = await transporterSMTP.sendMail(messageParams);
       console.log('smtp transporter res: ', res?.response);
-      if (!res.err) {
-        if (extUserId) {
-          await updateMailCount(extUserId);
-        }
-        return { status: 'success' };
+      // nodemailer never sets `res.err` — a rejected/bounced recipient still
+      // resolves (not throws), and shows up in `res.rejected` instead. Treat
+      // that as a failure so a silently-dropped send (e.g. to a recipient
+      // the mail server can't relay to) is reported back accurately.
+      if (res?.rejected?.length > 0) {
+        console.log('smtp transporter rejected recipients: ', JSON.stringify(res.rejected));
+        return { status: 'error', rejected: res.rejected };
       }
+      if (extUserId) {
+        await updateMailCount(extUserId);
+      }
+      return { status: 'success' };
     } else {
       if (mailgunApiKey) {
         const res = await mailgunClient.messages.create(mailgunDomain, messageParams);

@@ -154,14 +154,18 @@ async function sendMailProvider(params) {
           if (transporterSMTP) {
             const res = await transporterSMTP.sendMail(messageParams);
             console.log('smtp transporter res: ', res?.response);
-            if (!res.err) {
-              if (extUserId) {
-                await updateMailCount(extUserId);
-              }
-
+            // nodemailer never sets `res.err` — a rejected recipient still
+            // resolves (not throws) and shows up in `res.rejected` instead.
+            if (res?.rejected?.length > 0) {
+              console.log('smtp transporter rejected recipients: ', JSON.stringify(res.rejected));
               cleanupPaths.forEach(file => safeUnlink(file.path, file.label));
-              return { status: 'success' };
+              return { status: 'error', rejected: res.rejected };
             }
+            if (extUserId) {
+              await updateMailCount(extUserId);
+            }
+            cleanupPaths.forEach(file => safeUnlink(file.path, file.label));
+            return { status: 'success' };
           } else {
             if (mailgunApiKey) {
               const res = await mailgunClient.messages.create(mailgunDomain, messageParams);
@@ -204,12 +208,16 @@ async function sendMailProvider(params) {
       if (transporterSMTP) {
         const res = await transporterSMTP.sendMail(messageParams);
         console.log('smtp transporter res: ', res?.response);
-        if (!res.err) {
-          if (extUserId) {
-            await updateMailCount(extUserId);
-          }
-          return { status: 'success' };
+        // nodemailer never sets `res.err` — a rejected recipient still
+        // resolves (not throws) and shows up in `res.rejected` instead.
+        if (res?.rejected?.length > 0) {
+          console.log('smtp transporter rejected recipients: ', JSON.stringify(res.rejected));
+          return { status: 'error', rejected: res.rejected };
         }
+        if (extUserId) {
+          await updateMailCount(extUserId);
+        }
+        return { status: 'success' };
       } else {
         if (mailgunApiKey) {
           const res = await mailgunClient.messages.create(mailgunDomain, messageParams);
