@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import { format, toZonedTime } from 'date-fns-tz';
 import getPresignedUrl, { getSignedLocalUrl } from './cloud/parsefunction/getSignedUrl.js';
 import crypto from 'node:crypto';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import {
   PDFDocument,
   PDFName,
@@ -21,6 +23,58 @@ export const appName = 'PPMC e-Sign';
 // Shared brand tokens used to keep every server-generated email consistent
 // with the PPMC e-Sign govt-green portal theme and the dashboard logo.
 export const brandLogoUrl = `${process.env.APP_URL || ''}/assets/images/logo-email.png`;
+// Logo is attached to outgoing SMTP mail as an inline (cid:) image instead of
+// being fetched from our domain, so it displays in Gmail/Outlook even when the
+// portal isn't reachable from the public internet, and it avoids both remote
+// image links and data: URIs (which Gmail strips / gateways flag).
+const BRAND_LOGO_CID = 'ppmc-brand-logo@esign';
+const brandLogoFile = fileURLToPath(new URL('./images/logo-email.png', import.meta.url));
+// The rich-text email editor strips styling from links (it moves colour onto a
+// wrapper, so mail clients draw the link in default blue on a green highlight).
+// Re-apply the button style to signing/view links just before sending, so the
+// CTA looks right however the body was edited. Already-styled buttons are left alone.
+export const styleSignLinks = html => {
+  if (!html) return html;
+  const signLink =
+    /<a\b([^>]*?\bhref\s*=\s*(["'])[^"']*\/(?:login|recipientSignPdf)\/[^"']*\2[^>]*)>([\s\S]*?)<\/a>/gi;
+  return html.replace(signLink, (match, attrs, _q, inner) => {
+    if (/display\s*:\s*inline-block/i.test(attrs) || /<img\b/i.test(inner)) return match;
+    const cleanAttrs = attrs.replace(/\sstyle\s*=\s*(["'])[\s\S]*?\1/i, '');
+    const label = inner.replace(/^(?:\s|&nbsp;)+|(?:\s|&nbsp;)+$/g, '');
+    const style =
+      "background-color:#0F7A3D;color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:10px 26px;border-radius:6px;display:inline-block;";
+    return `<a${cleanAttrs} style='${style}'>${label}</a>`;
+  });
+};
+
+export const inlineBrandLogo = messageParams => {
+  try {
+    const styled = styleSignLinks(messageParams?.html);
+    const html = styled;
+    if (!html) return messageParams;
+    const withStyle = styled !== messageParams.html ? { ...messageParams, html: styled } : messageParams;
+    if (!fs.existsSync(brandLogoFile)) return withStyle;
+    const logoSrc = /(src\s*=\s*)(["'])[^"']*\/assets\/images\/logo-email\.png(?:\?[^"']*)?\2/gi;
+    const replaced = html.replace(logoSrc, `$1$2cid:${BRAND_LOGO_CID}$2`);
+    if (replaced === html) return withStyle;
+    return {
+      ...messageParams,
+      html: replaced,
+      attachments: [
+        ...(messageParams.attachments || []),
+        {
+          filename: 'logo.png',
+          path: brandLogoFile,
+          cid: BRAND_LOGO_CID,
+          contentDisposition: 'inline',
+        },
+      ],
+    };
+  } catch (err) {
+    console.log('inlineBrandLogo error', err?.message);
+    return messageParams;
+  }
+};
 export const brandColor = '#0F7A3D';
 export const brandSoftBg = '#F1F8F2';
 export const brandBorder = '#DCEEE0';

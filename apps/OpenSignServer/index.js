@@ -14,7 +14,15 @@ import FSFilesAdapter from '@parse/fs-files-adapter';
 import { app as customRoute } from './cloud/customRoute/customApp.js';
 import { exec } from 'child_process';
 import { createTransport } from 'nodemailer';
-import { appName, cloudServerUrl, serverAppId, smtpenable, smtpsecure, useLocal } from './Utils.js';
+import {
+  appName,
+  cloudServerUrl,
+  serverAppId,
+  smtpenable,
+  smtpsecure,
+  useLocal,
+  inlineBrandLogo,
+} from './Utils.js';
 import { SSOAuth } from './auth/authadapter.js';
 import runDbMigrations from './migrationdb/index.js';
 import { validateSignedLocalUrl } from './cloud/parsefunction/getSignedUrl.js';
@@ -151,7 +159,7 @@ export const config = {
               if (mailgunClient) {
                 const mailgunPayload = ApiPayloadConverter.mailgun(payload);
                 await mailgunClient.messages.create(mailgunDomain, mailgunPayload);
-              } else if (transporterMail) await transporterMail.sendMail(payload);
+              } else if (transporterMail) await transporterMail.sendMail(inlineBrandLogo(payload));
             },
           },
         },

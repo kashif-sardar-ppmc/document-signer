@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import https from 'https';
 import formData from 'form-data';
 import Mailgun from 'mailgun.js';
-import { appName, smtpenable, smtpsecure, updateMailCount } from '../../Utils.js';
+import { appName, smtpenable, smtpsecure, updateMailCount, inlineBrandLogo } from '../../Utils.js';
 import { createTransport } from 'nodemailer';
 import axios from 'axios';
 
@@ -152,7 +152,7 @@ async function sendMailProvider(params) {
             { path: testPdf, label: 'pdf' },
           ];
           if (transporterSMTP) {
-            const res = await transporterSMTP.sendMail(messageParams);
+            const res = await transporterSMTP.sendMail(inlineBrandLogo(messageParams));
             console.log('smtp transporter res: ', res?.response);
             // nodemailer never sets `res.err` — a rejected recipient still
             // resolves (not throws) and shows up in `res.rejected` instead.
@@ -206,7 +206,7 @@ async function sendMailProvider(params) {
       };
 
       if (transporterSMTP) {
-        const res = await transporterSMTP.sendMail(messageParams);
+        const res = await transporterSMTP.sendMail(inlineBrandLogo(messageParams));
         console.log('smtp transporter res: ', res?.response);
         // nodemailer never sets `res.err` — a rejected recipient still
         // resolves (not throws) and shows up in `res.rejected` instead.
